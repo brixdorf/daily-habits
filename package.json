@@ -5,9 +5,11 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "node --watch server/index.js"
+    "dev": "node --watch server/index.js",
+    "postinstall": "node scripts/copy-fonts.js"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.11.1",
     "dotenv": "^16.4.5",
