@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// GET /api/notes
+// GET /api/notes?month=YYYY-MM
 router.get('/', (req, res) => {
-  const notes = db.prepare('SELECT * FROM notes ORDER BY created_at DESC').all();
+  const month = req.query.month || new Date().toISOString().slice(0, 7);
+  const notes = db.prepare(
+    "SELECT * FROM notes WHERE strftime('%Y-%m', created_at) = ? ORDER BY created_at DESC"
+  ).all(month);
   res.json(notes);
 });
 

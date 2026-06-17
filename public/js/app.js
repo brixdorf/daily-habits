@@ -51,6 +51,7 @@ function navigate(delta) {
   if (currentMonth > 11) { currentMonth = 0;  currentYear++; }
   if (currentMonth <  0) { currentMonth = 11; currentYear--; }
   render();
+  loadNotes();
 }
 
 function monthParam() {
@@ -251,7 +252,7 @@ async function submitHabit(e) {
 // =========================================================
 
 async function loadNotes() {
-  const notes = await apiFetch('/api/notes');
+  const notes = await apiFetch(`/api/notes?month=${monthParam()}`);
   renderNotes(notes);
 }
 
