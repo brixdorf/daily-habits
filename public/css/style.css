@@ -2,117 +2,125 @@
    Self-hosted Inter font
    ========================================================= */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/inter-latin-400-normal.woff2') format('woff2');
+  src: url("/fonts/inter-latin-400-normal.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/inter-latin-500-normal.woff2') format('woff2');
+  src: url("/fonts/inter-latin-500-normal.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/inter-latin-600-normal.woff2') format('woff2');
+  src: url("/fonts/inter-latin-600-normal.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/inter-latin-700-normal.woff2') format('woff2');
+  src: url("/fonts/inter-latin-700-normal.woff2") format("woff2");
 }
 
 /* =========================================================
    CSS custom properties — light mode defaults
    ========================================================= */
 :root {
-  --bg:          #f9fafb;
-  --bg-card:     #ffffff;
-  --bg-header:   #ffffff;
-  --bg-today:    #1e293b;
-  --bg-modal:    #ffffff;
-  --bg-note:     #f1f5f9;
+  --bg: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --bg-today: #1e293b;
+  --bg-modal: #ffffff;
+  --bg-note: #f1f5f9;
 
-  --text:        #111827;
-  --text-muted:  #6b7280;
-  --text-today:  #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --text-today: #ffffff;
 
-  --border:      #e5e7eb;
-  --border-focus:#3b82f6;
+  --border: #e5e7eb;
+  --border-focus: #3b82f6;
 
-  --cell-empty:  #f3f4f6;
-  --cell-hover:  #e5e7eb;
+  --cell-empty: #f3f4f6;
+  --cell-hover: #e5e7eb;
 
-  --btn-primary-bg:   #10b981;
+  --btn-primary-bg: #10b981;
   --btn-primary-text: #ffffff;
-  --btn-ghost-text:   #374151;
-  --btn-ghost-hover:  #f3f4f6;
+  --btn-ghost-text: #374151;
+  --btn-ghost-hover: #f3f4f6;
 
-  --alert-error-bg:   #fef2f2;
+  --alert-error-bg: #fef2f2;
   --alert-error-text: #991b1b;
   --alert-error-border: #fca5a5;
 
-  --achieved-ok-bg:   #d1fae5;
+  --achieved-ok-bg: #d1fae5;
   --achieved-ok-text: #065f46;
 
-  --radius:  6px;
-  --shadow:  0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
-  --shadow-modal: 0 20px 60px rgba(0,0,0,.15);
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.15);
 
-  --font: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Cascadia Code", "Fira Code", ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:          #0f172a;
-    --bg-card:     #1e293b;
-    --bg-header:   #1e293b;
-    --bg-today:    #f1f5f9;
-    --bg-modal:    #1e293b;
-    --bg-note:     #0f172a;
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-header: #1e293b;
+    --bg-today: #f1f5f9;
+    --bg-modal: #1e293b;
+    --bg-note: #0f172a;
 
-    --text:        #f1f5f9;
-    --text-muted:  #94a3b8;
-    --text-today:  #0f172a;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-today: #0f172a;
 
-    --border:      #334155;
-    --border-focus:#60a5fa;
+    --border: #334155;
+    --border-focus: #60a5fa;
 
-    --cell-empty:  #1e293b;
-    --cell-hover:  #334155;
+    --cell-empty: #1e293b;
+    --cell-hover: #334155;
 
-    --btn-primary-bg:   #10b981;
+    --btn-primary-bg: #10b981;
     --btn-primary-text: #ffffff;
-    --btn-ghost-text:   #cbd5e1;
-    --btn-ghost-hover:  #334155;
+    --btn-ghost-text: #cbd5e1;
+    --btn-ghost-hover: #334155;
 
-    --alert-error-bg:   #1f0909;
+    --alert-error-bg: #1f0909;
     --alert-error-text: #fca5a5;
     --alert-error-border: #7f1d1d;
 
-    --achieved-ok-bg:   #064e3b;
+    --achieved-ok-bg: #064e3b;
     --achieved-ok-text: #6ee7b7;
 
-    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
-    --shadow-modal: 0 20px 60px rgba(0,0,0,.5);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 }
 
 /* =========================================================
    Reset & base
    ========================================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html { font-size: 16px; }
+html {
+  font-size: 16px;
+}
 
 body {
   font-family: var(--font);
@@ -125,14 +133,20 @@ body {
 /* =========================================================
    Typography
    ========================================================= */
-h1 { font-size: 1.5rem; font-weight: 700; }
-h2 { font-size: 1.125rem; font-weight: 600; }
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
 
 label {
   display: block;
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  margin-bottom: .375rem;
+  margin-bottom: 0.375rem;
   color: var(--text);
 }
 
@@ -141,22 +155,25 @@ input[type="number"],
 input[type="password"],
 textarea {
   width: 100%;
-  padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: .9375rem;
-  transition: border-color .15s;
+  font-size: 0.9375rem;
+  transition: border-color 0.15s;
   margin-bottom: 1rem;
 }
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--border-focus) 20%, transparent);
 }
-textarea { resize: vertical; }
+textarea {
+  resize: vertical;
+}
 
 /* =========================================================
    Buttons
@@ -165,15 +182,17 @@ textarea { resize: vertical; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .375rem;
-  padding: .5rem 1rem;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: var(--radius);
   font-family: var(--font);
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background .15s, opacity .15s;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
   line-height: 1;
   white-space: nowrap;
 }
@@ -181,18 +200,24 @@ textarea { resize: vertical; }
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text);
 }
-.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
 
 .btn-ghost {
   background: transparent;
   color: var(--btn-ghost-text);
 }
-.btn-ghost:hover { background: var(--btn-ghost-hover); }
+.btn-ghost:hover {
+  background: var(--btn-ghost-hover);
+}
 
-.btn-full { width: 100%; }
+.btn-full {
+  width: 100%;
+}
 
 .btn-icon {
-  padding: .375rem .625rem;
+  padding: 0.375rem 0.625rem;
   font-size: 1.1rem;
 }
 
@@ -210,7 +235,7 @@ textarea { resize: vertical; }
 .header-inner {
   max-width: 1400px;
   margin: 0 auto;
-  padding: .75rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -218,14 +243,16 @@ textarea { resize: vertical; }
 .header-brand {
   display: flex;
   align-items: center;
-  gap: .625rem;
+  gap: 0.625rem;
 }
 .brand-name {
   font-size: 1.125rem;
   font-weight: 700;
-  letter-spacing: -.01em;
+  letter-spacing: -0.01em;
 }
-.logout-form { margin: 0; }
+.logout-form {
+  margin: 0;
+}
 
 /* =========================================================
    Main layout
@@ -242,7 +269,7 @@ textarea { resize: vertical; }
 .month-nav {
   display: flex;
   align-items: center;
-  gap: .75rem;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
 .month-label {
@@ -266,25 +293,25 @@ textarea { resize: vertical; }
 .habit-table {
   border-collapse: collapse;
   min-width: 100%;
-  font-size: .8125rem;
+  font-size: 0.8125rem;
 }
 
 /* Header rows */
 .habit-table thead tr:first-child th {
-  padding: .25rem .35rem;
+  padding: 0.25rem 0.35rem;
   text-align: center;
-  font-size: .6875rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   border-bottom: none;
   background: var(--bg-card);
 }
 .habit-table thead tr:nth-child(2) th {
-  padding: .25rem .35rem .5rem;
+  padding: 0.25rem 0.35rem 0.5rem;
   text-align: center;
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
@@ -306,7 +333,7 @@ textarea { resize: vertical; }
   z-index: 2;
   background: var(--bg-card);
   border-right: 1px solid var(--border);
-  padding: .5rem .875rem;
+  padding: 0.5rem 0.875rem;
   text-align: left;
   font-weight: 500;
   white-space: nowrap;
@@ -316,13 +343,13 @@ textarea { resize: vertical; }
 }
 .habit-table thead th.col-name {
   min-width: 130px;
-  font-size: .8125rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   vertical-align: bottom;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -345,7 +372,7 @@ textarea { resize: vertical; }
   min-height: 2rem;
   border-radius: 6px;
   background: var(--cell-empty);
-  transition: background .1s;
+  transition: background 0.1s;
   user-select: none;
 }
 .habit-table td.cell-day:hover .cell-inner {
@@ -359,7 +386,9 @@ textarea { resize: vertical; }
   display: block;
   opacity: 0;
   transform: scale(0.5);
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
   pointer-events: none;
 }
 .cell-check-svg.visible {
@@ -379,21 +408,21 @@ textarea { resize: vertical; }
 .habit-table th.col-achieved,
 .habit-table td.col-goal,
 .habit-table td.col-achieved {
-  padding: .4rem .75rem;
+  padding: 0.4rem 0.75rem;
   text-align: center;
-  font-size: .8125rem;
+  font-size: 0.8125rem;
   white-space: nowrap;
   border-left: 1px solid var(--border);
 }
 .habit-table thead th.col-goal,
 .habit-table thead th.col-achieved {
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   vertical-align: bottom;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
 .habit-table td.achieved-ok {
@@ -416,14 +445,14 @@ textarea { resize: vertical; }
   padding: 2.5rem;
   text-align: center;
   color: var(--text-muted);
-  font-size: .9375rem;
+  font-size: 0.9375rem;
 }
 
 /* =========================================================
    Grid footer
    ========================================================= */
 .grid-footer {
-  margin-top: .875rem;
+  margin-top: 0.875rem;
 }
 
 /* =========================================================
@@ -447,22 +476,22 @@ textarea { resize: vertical; }
   background: var(--bg-note);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: .875rem 1rem;
-  margin-bottom: .75rem;
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.75rem;
 }
 .note-timestamp {
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-bottom: .375rem;
+  margin-bottom: 0.375rem;
 }
 .note-content {
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   white-space: pre-wrap;
   word-break: break-word;
 }
 .notes-empty {
   color: var(--text-muted);
-  font-size: .9375rem;
+  font-size: 0.9375rem;
 }
 
 /* =========================================================
@@ -471,14 +500,16 @@ textarea { resize: vertical; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.45);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   padding: 1rem;
 }
-.modal-overlay[hidden] { display: none; }
+.modal-overlay[hidden] {
+  display: none;
+}
 
 .modal {
   background: var(--bg-modal);
@@ -493,9 +524,9 @@ textarea { resize: vertical; }
 }
 .modal-actions {
   display: flex;
-  gap: .625rem;
+  gap: 0.625rem;
   justify-content: flex-end;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 /* =========================================================
@@ -521,18 +552,20 @@ textarea { resize: vertical; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .625rem;
+  gap: 0.625rem;
   margin-bottom: 1.75rem;
 }
-.login-logo h1 { font-size: 1.375rem; }
+.login-logo h1 {
+  font-size: 1.375rem;
+}
 
 .alert-error {
   background: var(--alert-error-bg);
   color: var(--alert-error-text);
   border: 1px solid var(--alert-error-border);
   border-radius: var(--radius);
-  padding: .625rem .875rem;
-  font-size: .875rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
   margin-bottom: 1.125rem;
 }
 
@@ -540,9 +573,20 @@ textarea { resize: vertical; }
    Responsive tweaks
    ========================================================= */
 @media (max-width: 600px) {
-  .site-main { padding: 1rem 1rem 2.5rem; }
-  .header-inner { padding: .625rem 1rem; }
-  .brand-name { font-size: 1rem; }
-  .month-label { min-width: 9rem; font-size: 1rem; }
-  .modal { padding: 1.25rem; }
+  .site-main {
+    padding: 1rem 1rem 2.5rem;
+  }
+  .header-inner {
+    padding: 0.625rem 1rem;
+  }
+  .brand-name {
+    font-size: 1rem;
+  }
+  .month-label {
+    min-width: 9rem;
+    font-size: 1rem;
+  }
+  .modal {
+    padding: 1.25rem;
+  }
 }

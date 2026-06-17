@@ -5,41 +5,66 @@
    ========================================================= */
 
 const MONTH_NAMES = [
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December'
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
-const DAY_LETTERS = ['M','T','W','T','F','S','S'];
+const DAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
 
 // State
 let currentYear, currentMonth; // 0-indexed month
 
 function init() {
   const now = new Date();
-  currentYear  = now.getFullYear();
+  currentYear = now.getFullYear();
   currentMonth = now.getMonth();
 
-  document.getElementById('prev-month').addEventListener('click', () => navigate(-1));
-  document.getElementById('next-month').addEventListener('click', () => navigate(1));
+  document
+    .getElementById("prev-month")
+    .addEventListener("click", () => navigate(-1));
+  document
+    .getElementById("next-month")
+    .addEventListener("click", () => navigate(1));
 
-  document.getElementById('new-habit-btn').addEventListener('click', openHabitModal);
-  document.getElementById('habit-cancel').addEventListener('click', closeHabitModal);
-  document.getElementById('habit-form').addEventListener('submit', submitHabit);
+  document
+    .getElementById("new-habit-btn")
+    .addEventListener("click", openHabitModal);
+  document
+    .getElementById("habit-cancel")
+    .addEventListener("click", closeHabitModal);
+  document.getElementById("habit-form").addEventListener("submit", submitHabit);
 
-  document.getElementById('new-note-btn').addEventListener('click', openNoteModal);
-  document.getElementById('note-cancel').addEventListener('click', closeNoteModal);
-  document.getElementById('note-form').addEventListener('submit', submitNote);
+  document
+    .getElementById("new-note-btn")
+    .addEventListener("click", openNoteModal);
+  document
+    .getElementById("note-cancel")
+    .addEventListener("click", closeNoteModal);
+  document.getElementById("note-form").addEventListener("submit", submitNote);
 
   // Close modals on overlay click
-  document.getElementById('habit-modal').addEventListener('click', e => {
+  document.getElementById("habit-modal").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeHabitModal();
   });
-  document.getElementById('note-modal').addEventListener('click', e => {
+  document.getElementById("note-modal").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeNoteModal();
   });
 
   // Close modals on Escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeHabitModal(); closeNoteModal(); }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeHabitModal();
+      closeNoteModal();
+    }
   });
 
   render();
@@ -48,14 +73,20 @@ function init() {
 
 function navigate(delta) {
   currentMonth += delta;
-  if (currentMonth > 11) { currentMonth = 0;  currentYear++; }
-  if (currentMonth <  0) { currentMonth = 11; currentYear--; }
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
   render();
   loadNotes();
 }
 
 function monthParam() {
-  return `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+  return `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}`;
 }
 
 // =========================================================
@@ -64,52 +95,54 @@ function monthParam() {
 
 async function render() {
   const mp = monthParam();
-  document.getElementById('month-label').textContent =
+  document.getElementById("month-label").textContent =
     `${MONTH_NAMES[currentMonth]} ${currentYear}`;
 
   const habits = await apiFetch(`/api/habits?month=${mp}`);
-  const container = document.getElementById('habit-grid-container');
-  container.innerHTML = '';
+  const container = document.getElementById("habit-grid-container");
+  container.innerHTML = "";
 
   if (!habits.length) {
-    container.innerHTML = '<div class="empty-habits">No habits yet — add one below.</div>';
+    container.innerHTML =
+      '<div class="empty-habits">No habits yet — add one below.</div>';
     return;
   }
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const today = new Date();
-  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-  const isCurrentMonth = (today.getFullYear() === currentYear && today.getMonth() === currentMonth);
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const isCurrentMonth =
+    today.getFullYear() === currentYear && today.getMonth() === currentMonth;
 
-  const table = document.createElement('table');
-  table.className = 'habit-table';
+  const table = document.createElement("table");
+  table.className = "habit-table";
 
   // Build two header rows: day letters + day numbers
   const thead = table.createTHead();
 
   const trLetters = thead.insertRow();
-  th(trLetters, '', 'col-name'); // empty corner
+  th(trLetters, "", "col-name"); // empty corner
 
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(currentYear, currentMonth, d);
     const dayOfWeek = (date.getDay() + 6) % 7; // 0=Mon…6=Sun
     const cell = th(trLetters, DAY_LETTERS[dayOfWeek]);
-    const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if (isCurrentMonth && dateStr === todayStr) cell.classList.add('col-today');
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    if (isCurrentMonth && dateStr === todayStr) cell.classList.add("col-today");
   }
-  th(trLetters, 'Goal',     'col-goal');
-  th(trLetters, 'Achieved', 'col-achieved');
+  th(trLetters, "Goal", "col-goal");
+  th(trLetters, "Achieved", "col-achieved");
 
   const trNumbers = thead.insertRow();
-  th(trNumbers, 'Habit', 'col-name');
+  th(trNumbers, "Habit", "col-name");
 
   for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     const cell = th(trNumbers, String(d));
-    if (isCurrentMonth && dateStr === todayStr) cell.classList.add('col-today');
+    if (isCurrentMonth && dateStr === todayStr) cell.classList.add("col-today");
   }
-  th(trNumbers, '', 'col-goal');
-  th(trNumbers, '', 'col-achieved');
+  th(trNumbers, "", "col-goal");
+  th(trNumbers, "", "col-achieved");
 
   // Body rows
   const tbody = table.createTBody();
@@ -120,41 +153,51 @@ async function render() {
 
     // Name cell
     const nameTd = tr.insertCell();
-    nameTd.className = 'col-name';
+    nameTd.className = "col-name";
     nameTd.textContent = habit.name;
 
     // Day cells
     for (let d = 1; d <= daysInMonth; d++) {
-      const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
       const td = tr.insertCell();
-      td.className = 'cell-day';
-      if (isCurrentMonth && dateStr === todayStr) td.classList.add('col-today');
+      td.className = "cell-day";
+      if (isCurrentMonth && dateStr === todayStr) td.classList.add("col-today");
 
-      const inner = document.createElement('div');
-      inner.className = 'cell-inner';
+      const inner = document.createElement("div");
+      inner.className = "cell-inner";
 
       const checkSvg = makeCheckSvg();
 
       if (checkedSet.has(dateStr)) {
-        td.classList.add('checked');
+        td.classList.add("checked");
         inner.style.background = habit.color;
-        checkSvg.classList.add('visible');
+        checkSvg.classList.add("visible");
       }
 
       inner.appendChild(checkSvg);
       td.appendChild(inner);
 
-      td.addEventListener('click', () => toggleCheck(habit, dateStr, td, inner, checkSvg, checkedSet, achievedTd));
+      td.addEventListener("click", () =>
+        toggleCheck(
+          habit,
+          dateStr,
+          td,
+          inner,
+          checkSvg,
+          checkedSet,
+          achievedTd,
+        ),
+      );
     }
 
     // Goal cell
     const goalTd = tr.insertCell();
-    goalTd.className = 'col-goal';
+    goalTd.className = "col-goal";
     goalTd.textContent = habit.goal;
 
     // Achieved cell
     const achievedTd = tr.insertCell();
-    achievedTd.className = 'col-achieved';
+    achievedTd.className = "col-achieved";
     updateAchievedCell(achievedTd, habit.achieved, habit.goal);
   }
 
@@ -162,25 +205,28 @@ async function render() {
 }
 
 function makeCheckSvg() {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 16 16');
-  svg.setAttribute('width', '14');
-  svg.setAttribute('height', '14');
-  svg.setAttribute('fill', 'none');
-  svg.setAttribute('stroke', '#ffffff');
-  svg.setAttribute('stroke-width', '2.5');
-  svg.setAttribute('stroke-linecap', 'round');
-  svg.setAttribute('stroke-linejoin', 'round');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('class', 'cell-check-svg');
-  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-  poly.setAttribute('points', '3,9 6.5,12.5 13,4');
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("width", "14");
+  svg.setAttribute("height", "14");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "#ffffff");
+  svg.setAttribute("stroke-width", "2.5");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("class", "cell-check-svg");
+  const poly = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "polyline",
+  );
+  poly.setAttribute("points", "3,9 6.5,12.5 13,4");
   svg.appendChild(poly);
   return svg;
 }
 
 function th(row, text, className) {
-  const cell = document.createElement('th');
+  const cell = document.createElement("th");
   if (text) cell.textContent = text;
   if (className) cell.className = className;
   row.appendChild(cell);
@@ -191,37 +237,45 @@ function th(row, text, className) {
 // Toggle a check cell (optimistic update)
 // =========================================================
 
-async function toggleCheck(habit, dateStr, td, inner, checkSvg, checkedSet, achievedTd) {
+async function toggleCheck(
+  habit,
+  dateStr,
+  td,
+  inner,
+  checkSvg,
+  checkedSet,
+  achievedTd,
+) {
   const wasChecked = checkedSet.has(dateStr);
 
   // Optimistic update
   if (wasChecked) {
     checkedSet.delete(dateStr);
-    td.classList.remove('checked');
-    inner.style.background = '';
-    checkSvg.classList.remove('visible');
+    td.classList.remove("checked");
+    inner.style.background = "";
+    checkSvg.classList.remove("visible");
   } else {
     checkedSet.add(dateStr);
-    td.classList.add('checked');
+    td.classList.add("checked");
     inner.style.background = habit.color;
-    checkSvg.classList.add('visible');
+    checkSvg.classList.add("visible");
   }
   updateAchievedCell(achievedTd, checkedSet.size, habit.goal);
 
   try {
-    await apiFetch(`/api/habits/${habit.id}/toggle`, 'POST', { date: dateStr });
+    await apiFetch(`/api/habits/${habit.id}/toggle`, "POST", { date: dateStr });
   } catch {
     // Revert on error
     if (wasChecked) {
       checkedSet.add(dateStr);
-      td.classList.add('checked');
+      td.classList.add("checked");
       inner.style.background = habit.color;
-      checkSvg.classList.add('visible');
+      checkSvg.classList.add("visible");
     } else {
       checkedSet.delete(dateStr);
-      td.classList.remove('checked');
-      inner.style.background = '';
-      checkSvg.classList.remove('visible');
+      td.classList.remove("checked");
+      inner.style.background = "";
+      checkSvg.classList.remove("visible");
     }
     updateAchievedCell(achievedTd, checkedSet.size, habit.goal);
   }
@@ -230,9 +284,9 @@ async function toggleCheck(habit, dateStr, td, inner, checkSvg, checkedSet, achi
 function updateAchievedCell(td, achieved, goal) {
   td.textContent = achieved;
   if (achieved >= goal) {
-    td.classList.add('achieved-ok');
+    td.classList.add("achieved-ok");
   } else {
-    td.classList.remove('achieved-ok');
+    td.classList.remove("achieved-ok");
   }
 }
 
@@ -241,20 +295,20 @@ function updateAchievedCell(td, achieved, goal) {
 // =========================================================
 
 function openHabitModal() {
-  document.getElementById('habit-form').reset();
-  document.getElementById('habit-modal').hidden = false;
-  document.getElementById('habit-name').focus();
+  document.getElementById("habit-form").reset();
+  document.getElementById("habit-modal").hidden = false;
+  document.getElementById("habit-name").focus();
 }
 function closeHabitModal() {
-  document.getElementById('habit-modal').hidden = true;
+  document.getElementById("habit-modal").hidden = true;
 }
 async function submitHabit(e) {
   e.preventDefault();
-  const name = document.getElementById('habit-name').value.trim();
-  const goal = parseInt(document.getElementById('habit-goal').value, 10);
+  const name = document.getElementById("habit-name").value.trim();
+  const goal = parseInt(document.getElementById("habit-goal").value, 10);
   if (!name || !goal) return;
 
-  await apiFetch('/api/habits', 'POST', { name, goal });
+  await apiFetch("/api/habits", "POST", { name, goal });
   closeHabitModal();
   render();
 }
@@ -269,8 +323,8 @@ async function loadNotes() {
 }
 
 function renderNotes(notes) {
-  const list = document.getElementById('notes-list');
-  list.innerHTML = '';
+  const list = document.getElementById("notes-list");
+  list.innerHTML = "";
 
   if (!notes.length) {
     list.innerHTML = '<p class="notes-empty">No notes yet.</p>';
@@ -282,15 +336,15 @@ function renderNotes(notes) {
 }
 
 function buildNoteCard(note) {
-  const card = document.createElement('div');
-  card.className = 'note-card';
+  const card = document.createElement("div");
+  card.className = "note-card";
 
-  const ts = document.createElement('div');
-  ts.className = 'note-timestamp';
+  const ts = document.createElement("div");
+  ts.className = "note-timestamp";
   ts.textContent = formatTimestamp(note.created_at);
 
-  const content = document.createElement('div');
-  content.className = 'note-content';
+  const content = document.createElement("div");
+  content.className = "note-content";
   content.textContent = note.content;
 
   card.appendChild(ts);
@@ -300,32 +354,38 @@ function buildNoteCard(note) {
 
 function formatTimestamp(sqliteStr) {
   // SQLite stores UTC; parse as UTC and display in local time
-  const dt = new Date(sqliteStr.replace(' ', 'T') + 'Z');
-  return dt.toLocaleString('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', hour12: true,
-  }).replace(',', ' at');
+  const dt = new Date(sqliteStr.replace(" ", "T") + "Z");
+  return dt
+    .toLocaleString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .replace(",", " at");
 }
 
 function openNoteModal() {
-  document.getElementById('note-form').reset();
-  document.getElementById('note-modal').hidden = false;
-  document.getElementById('note-content').focus();
+  document.getElementById("note-form").reset();
+  document.getElementById("note-modal").hidden = false;
+  document.getElementById("note-content").focus();
 }
 function closeNoteModal() {
-  document.getElementById('note-modal').hidden = true;
+  document.getElementById("note-modal").hidden = true;
 }
 async function submitNote(e) {
   e.preventDefault();
-  const content = document.getElementById('note-content').value.trim();
+  const content = document.getElementById("note-content").value.trim();
   if (!content) return;
 
-  const note = await apiFetch('/api/notes', 'POST', { content });
+  const note = await apiFetch("/api/notes", "POST", { content });
   closeNoteModal();
 
   // Prepend new note card
-  const list = document.getElementById('notes-list');
-  const emptyEl = list.querySelector('.notes-empty');
+  const list = document.getElementById("notes-list");
+  const emptyEl = list.querySelector(".notes-empty");
   if (emptyEl) emptyEl.remove();
   list.insertBefore(buildNoteCard(note), list.firstChild);
 }
@@ -334,10 +394,10 @@ async function submitNote(e) {
 // API helper
 // =========================================================
 
-async function apiFetch(url, method = 'GET', body) {
+async function apiFetch(url, method = "GET", body) {
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(url, opts);
@@ -352,4 +412,4 @@ async function apiFetch(url, method = 'GET', body) {
 // Boot
 // =========================================================
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener("DOMContentLoaded", init);

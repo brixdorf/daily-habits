@@ -1,8 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const src = path.join(__dirname, '..', 'node_modules', '@fontsource', 'inter', 'files');
-const dest = path.join(__dirname, '..', 'public', 'fonts');
+const src = path.join(
+  __dirname,
+  "..",
+  "node_modules",
+  "@fontsource",
+  "inter",
+  "files",
+);
+const dest = path.join(__dirname, "..", "public", "fonts");
 
 if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
 

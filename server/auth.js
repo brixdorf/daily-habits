@@ -1,8 +1,8 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 function requireAuth(req, res, next) {
   if (req.session && req.session.authenticated) return next();
-  res.redirect('/login');
+  res.redirect("/login");
 }
 
 async function verifyCredentials(username, password) {
