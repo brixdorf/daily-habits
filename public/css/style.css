@@ -1,0 +1,508 @@
+/* =========================================================
+   CSS custom properties — light mode defaults
+   ========================================================= */
+:root {
+  --bg:          #f9fafb;
+  --bg-card:     #ffffff;
+  --bg-header:   #ffffff;
+  --bg-today:    #1e293b;
+  --bg-modal:    #ffffff;
+  --bg-note:     #f1f5f9;
+
+  --text:        #111827;
+  --text-muted:  #6b7280;
+  --text-today:  #ffffff;
+
+  --border:      #e5e7eb;
+  --border-focus:#3b82f6;
+
+  --cell-empty:  #f3f4f6;
+  --cell-hover:  #e5e7eb;
+
+  --btn-primary-bg:   #10b981;
+  --btn-primary-text: #ffffff;
+  --btn-ghost-text:   #374151;
+  --btn-ghost-hover:  #f3f4f6;
+
+  --alert-error-bg:   #fef2f2;
+  --alert-error-text: #991b1b;
+  --alert-error-border: #fca5a5;
+
+  --achieved-ok-bg:   #d1fae5;
+  --achieved-ok-text: #065f46;
+
+  --radius:  6px;
+  --shadow:  0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-modal: 0 20px 60px rgba(0,0,0,.15);
+
+  --font: -apple-system, "Segoe UI", Inter, Roboto, sans-serif;
+  --font-mono: "Cascadia Code", "Fira Code", ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:          #0f172a;
+    --bg-card:     #1e293b;
+    --bg-header:   #1e293b;
+    --bg-today:    #f1f5f9;
+    --bg-modal:    #1e293b;
+    --bg-note:     #0f172a;
+
+    --text:        #f1f5f9;
+    --text-muted:  #94a3b8;
+    --text-today:  #0f172a;
+
+    --border:      #334155;
+    --border-focus:#60a5fa;
+
+    --cell-empty:  #1e293b;
+    --cell-hover:  #334155;
+
+    --btn-primary-bg:   #10b981;
+    --btn-primary-text: #ffffff;
+    --btn-ghost-text:   #cbd5e1;
+    --btn-ghost-hover:  #334155;
+
+    --alert-error-bg:   #1f0909;
+    --alert-error-text: #fca5a5;
+    --alert-error-border: #7f1d1d;
+
+    --achieved-ok-bg:   #064e3b;
+    --achieved-ok-text: #6ee7b7;
+
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+    --shadow-modal: 0 20px 60px rgba(0,0,0,.5);
+  }
+}
+
+/* =========================================================
+   Reset & base
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Typography
+   ========================================================= */
+h1 { font-size: 1.5rem; font-weight: 700; }
+h2 { font-size: 1.125rem; font-weight: 600; }
+
+label {
+  display: block;
+  font-size: .875rem;
+  font-weight: 500;
+  margin-bottom: .375rem;
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: .9375rem;
+  transition: border-color .15s;
+  margin-bottom: 1rem;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--border-focus) 20%, transparent);
+}
+textarea { resize: vertical; }
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+  padding: .5rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s, opacity .15s;
+  line-height: 1;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.btn-primary:hover { filter: brightness(1.08); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--btn-ghost-text);
+}
+.btn-ghost:hover { background: var(--btn-ghost-hover); }
+
+.btn-full { width: 100%; }
+
+.btn-icon {
+  padding: .375rem .625rem;
+  font-size: 1.1rem;
+}
+
+/* =========================================================
+   Header
+   ========================================================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: .75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+}
+.brand-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.logout-form { margin: 0; }
+
+/* =========================================================
+   Main layout
+   ========================================================= */
+.site-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+}
+
+/* =========================================================
+   Month nav
+   ========================================================= */
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.month-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  min-width: 11rem;
+  text-align: center;
+}
+
+/* =========================================================
+   Habit grid
+   ========================================================= */
+.grid-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.habit-table {
+  border-collapse: collapse;
+  min-width: 100%;
+  font-size: .8125rem;
+}
+
+/* Header rows */
+.habit-table thead tr:first-child th {
+  padding: .25rem .35rem;
+  text-align: center;
+  font-size: .6875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: none;
+  background: var(--bg-card);
+}
+.habit-table thead tr:nth-child(2) th {
+  padding: .25rem .35rem .5rem;
+  text-align: center;
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+/* Today column highlight in header */
+.habit-table thead th.col-today {
+  background: var(--bg-today);
+  color: var(--text-today);
+  border-radius: 4px 4px 0 0;
+}
+
+/* Sticky habit name column */
+.habit-table th.col-name,
+.habit-table td.col-name {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  padding: .5rem .875rem;
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.habit-table thead th.col-name {
+  min-width: 130px;
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  vertical-align: bottom;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Day cells */
+.habit-table td.cell-day {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.habit-table td.cell-day .cell-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 2rem;
+  border-radius: 4px;
+  background: var(--cell-empty);
+  transition: background .1s;
+  user-select: none;
+}
+.habit-table td.cell-day:hover .cell-inner {
+  background: var(--cell-hover);
+}
+.habit-table td.cell-day.checked .cell-inner {
+  /* color set inline via JS from habit.color */
+}
+.habit-table td.cell-day .cell-check {
+  font-size: 1rem;
+  line-height: 1;
+}
+/* Today column data cells */
+.habit-table td.col-today .cell-inner {
+  background: color-mix(in srgb, var(--bg-today) 12%, var(--cell-empty));
+}
+.habit-table td.col-today.checked .cell-inner {
+  /* stays as habit color, just slightly different bg is fine */
+}
+
+/* Goal / Achieved columns */
+.habit-table th.col-goal,
+.habit-table th.col-achieved,
+.habit-table td.col-goal,
+.habit-table td.col-achieved {
+  padding: .4rem .75rem;
+  text-align: center;
+  font-size: .8125rem;
+  white-space: nowrap;
+  border-left: 1px solid var(--border);
+}
+.habit-table thead th.col-goal,
+.habit-table thead th.col-achieved {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  vertical-align: bottom;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+.habit-table td.achieved-ok {
+  background: var(--achieved-ok-bg);
+  color: var(--achieved-ok-text);
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+/* Row separators */
+.habit-table tbody tr {
+  border-top: 1px solid var(--border);
+}
+.habit-table tbody tr:first-child {
+  border-top: none;
+}
+
+/* Empty state */
+.empty-habits {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .9375rem;
+}
+
+/* =========================================================
+   Grid footer
+   ========================================================= */
+.grid-footer {
+  margin-top: .875rem;
+}
+
+/* =========================================================
+   Notes section
+   ========================================================= */
+.notes-section {
+  margin-top: 2.5rem;
+}
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.notes-header h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.note-card {
+  background: var(--bg-note);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .875rem 1rem;
+  margin-bottom: .75rem;
+}
+.note-timestamp {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-bottom: .375rem;
+}
+.note-content {
+  font-size: .9375rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.notes-empty {
+  color: var(--text-muted);
+  font-size: .9375rem;
+}
+
+/* =========================================================
+   Modals
+   ========================================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+.modal-overlay[hidden] { display: none; }
+
+.modal {
+  background: var(--bg-modal);
+  border-radius: calc(var(--radius) * 1.5);
+  box-shadow: var(--shadow-modal);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+}
+.modal h2 {
+  margin-bottom: 1.25rem;
+}
+.modal-actions {
+  display: flex;
+  gap: .625rem;
+  justify-content: flex-end;
+  margin-top: .5rem;
+}
+
+/* =========================================================
+   Login page
+   ========================================================= */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  box-shadow: var(--shadow-modal);
+  padding: 2.25rem 2rem;
+  width: 100%;
+  max-width: 360px;
+}
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .625rem;
+  margin-bottom: 1.75rem;
+}
+.login-logo h1 { font-size: 1.375rem; }
+
+.alert-error {
+  background: var(--alert-error-bg);
+  color: var(--alert-error-text);
+  border: 1px solid var(--alert-error-border);
+  border-radius: var(--radius);
+  padding: .625rem .875rem;
+  font-size: .875rem;
+  margin-bottom: 1.125rem;
+}
+
+/* =========================================================
+   Responsive tweaks
+   ========================================================= */
+@media (max-width: 600px) {
+  .site-main { padding: 1rem 1rem 2.5rem; }
+  .header-inner { padding: .625rem 1rem; }
+  .brand-name { font-size: 1rem; }
+  .month-label { min-width: 9rem; font-size: 1rem; }
+  .modal { padding: 1.25rem; }
+}

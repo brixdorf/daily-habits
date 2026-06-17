@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyHabits</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="/favicon.svg" alt="" width="28" height="28">
+        <span class="brand-name">DailyHabits</span>
+      </div>
+      <form method="POST" action="/logout" class="logout-form">
+        <button type="submit" class="btn btn-ghost">Logout</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <!-- Month nav -->
+    <div class="month-nav">
+      <button id="prev-month" class="btn btn-ghost btn-icon" aria-label="Previous month">&#8592;</button>
+      <span id="month-label" class="month-label"></span>
+      <button id="next-month" class="btn btn-ghost btn-icon" aria-label="Next month">&#8594;</button>
+    </div>
+
+    <!-- Habit grid -->
+    <div class="grid-wrapper">
+      <div id="habit-grid-container"></div>
+    </div>
+
+    <div class="grid-footer">
+      <button id="new-habit-btn" class="btn btn-primary">+ New Habit</button>
+    </div>
+
+    <!-- Notes section -->
+    <section class="notes-section">
+      <div class="notes-header">
+        <h2>Notes</h2>
+        <button id="new-note-btn" class="btn btn-primary">+ New Note</button>
+      </div>
+      <div id="notes-list"></div>
+    </section>
+  </main>
+
+  <!-- New Habit Modal -->
+  <div id="habit-modal" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="habit-modal-title">
+      <h2 id="habit-modal-title">New Habit</h2>
+      <form id="habit-form">
+        <label for="habit-name">Habit name</label>
+        <input id="habit-name" name="name" type="text" required placeholder="e.g. Meditate">
+        <label for="habit-goal">Monthly goal (days)</label>
+        <input id="habit-goal" name="goal" type="number" required min="1" max="31" placeholder="e.g. 20">
+        <div class="modal-actions">
+          <button type="button" id="habit-cancel" class="btn btn-ghost">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- New Note Modal -->
+  <div id="note-modal" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="note-modal-title">
+      <h2 id="note-modal-title">New Note</h2>
+      <form id="note-form">
+        <label for="note-content">Note</label>
+        <textarea id="note-content" name="content" required rows="5" placeholder="Write something..."></textarea>
+        <div class="modal-actions">
+          <button type="button" id="note-cancel" class="btn btn-ghost">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
