@@ -133,20 +133,18 @@ async function render() {
       const inner = document.createElement('div');
       inner.className = 'cell-inner';
 
-      const checkSpan = document.createElement('span');
-      checkSpan.className = 'cell-check';
+      const checkSvg = makeCheckSvg();
 
       if (checkedSet.has(dateStr)) {
         td.classList.add('checked');
         inner.style.background = habit.color;
-        checkSpan.textContent = '✓';
-        checkSpan.style.color = '#ffffff';
+        checkSvg.classList.add('visible');
       }
 
-      inner.appendChild(checkSpan);
+      inner.appendChild(checkSvg);
       td.appendChild(inner);
 
-      td.addEventListener('click', () => toggleCheck(habit, dateStr, td, inner, checkSpan, checkedSet, achievedTd));
+      td.addEventListener('click', () => toggleCheck(habit, dateStr, td, inner, checkSvg, checkedSet, achievedTd));
     }
 
     // Goal cell
@@ -163,6 +161,24 @@ async function render() {
   container.appendChild(table);
 }
 
+function makeCheckSvg() {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('width', '14');
+  svg.setAttribute('height', '14');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', '#ffffff');
+  svg.setAttribute('stroke-width', '2.5');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('class', 'cell-check-svg');
+  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  poly.setAttribute('points', '3,9 6.5,12.5 13,4');
+  svg.appendChild(poly);
+  return svg;
+}
+
 function th(row, text, className) {
   const cell = document.createElement('th');
   if (text) cell.textContent = text;
@@ -175,7 +191,7 @@ function th(row, text, className) {
 // Toggle a check cell (optimistic update)
 // =========================================================
 
-async function toggleCheck(habit, dateStr, td, inner, checkSpan, checkedSet, achievedTd) {
+async function toggleCheck(habit, dateStr, td, inner, checkSvg, checkedSet, achievedTd) {
   const wasChecked = checkedSet.has(dateStr);
 
   // Optimistic update
@@ -183,14 +199,12 @@ async function toggleCheck(habit, dateStr, td, inner, checkSpan, checkedSet, ach
     checkedSet.delete(dateStr);
     td.classList.remove('checked');
     inner.style.background = '';
-    checkSpan.textContent = '';
-    checkSpan.style.color = '';
+    checkSvg.classList.remove('visible');
   } else {
     checkedSet.add(dateStr);
     td.classList.add('checked');
     inner.style.background = habit.color;
-    checkSpan.textContent = '✓';
-    checkSpan.style.color = '#ffffff';
+    checkSvg.classList.add('visible');
   }
   updateAchievedCell(achievedTd, checkedSet.size, habit.goal);
 
@@ -202,14 +216,12 @@ async function toggleCheck(habit, dateStr, td, inner, checkSpan, checkedSet, ach
       checkedSet.add(dateStr);
       td.classList.add('checked');
       inner.style.background = habit.color;
-      checkSpan.textContent = '✓';
-      checkSpan.style.color = '#ffffff';
+      checkSvg.classList.add('visible');
     } else {
       checkedSet.delete(dateStr);
       td.classList.remove('checked');
       inner.style.background = '';
-      checkSpan.textContent = '';
-      checkSpan.style.color = '';
+      checkSvg.classList.remove('visible');
     }
     updateAchievedCell(achievedTd, checkedSet.size, habit.goal);
   }
