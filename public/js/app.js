@@ -62,7 +62,9 @@ function init() {
   document.getElementById("confirm-modal").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeConfirmModal();
   });
-  document.getElementById("confirm-cancel").addEventListener("click", closeConfirmModal);
+  document
+    .getElementById("confirm-cancel")
+    .addEventListener("click", closeConfirmModal);
   document.getElementById("confirm-delete").addEventListener("click", () => {
     const cb = confirmCallback;
     closeConfirmModal();
@@ -186,7 +188,10 @@ async function render() {
 
     let hoverTimer = null;
     nameTd.addEventListener("mouseenter", () => {
-      hoverTimer = setTimeout(() => habitDeleteBtn.classList.add("visible"), 1500);
+      hoverTimer = setTimeout(
+        () => habitDeleteBtn.classList.add("visible"),
+        1500,
+      );
     });
     nameTd.addEventListener("mouseleave", () => {
       clearTimeout(hoverTimer);
@@ -254,8 +259,10 @@ function makeTrashSvg() {
   svg.setAttribute("aria-hidden", "true");
 
   const lid = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  lid.setAttribute("x1", "2.5"); lid.setAttribute("y1", "4.5");
-  lid.setAttribute("x2", "13.5"); lid.setAttribute("y2", "4.5");
+  lid.setAttribute("x1", "2.5");
+  lid.setAttribute("y1", "4.5");
+  lid.setAttribute("x2", "13.5");
+  lid.setAttribute("y2", "4.5");
   svg.appendChild(lid);
 
   const handle = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -263,7 +270,10 @@ function makeTrashSvg() {
   svg.appendChild(handle);
 
   const body = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  body.setAttribute("d", "M4 4.5l.8 9a.5.5 0 0 0 .5.5h6.4a.5.5 0 0 0 .5-.5l.8-9");
+  body.setAttribute(
+    "d",
+    "M4 4.5l.8 9a.5.5 0 0 0 .5.5h6.4a.5.5 0 0 0 .5-.5l.8-9",
+  );
   svg.appendChild(body);
 
   return svg;
