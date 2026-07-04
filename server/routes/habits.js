@@ -88,4 +88,13 @@ router.post("/:id/toggle", (req, res) => {
   }
 });
 
+// DELETE /api/habits/:id
+router.delete("/:id", (req, res) => {
+  const habitId = parseInt(req.params.id, 10);
+  const habit = db.prepare("SELECT id FROM habits WHERE id = ?").get(habitId);
+  if (!habit) return res.status(404).json({ error: "habit not found" });
+  db.prepare("DELETE FROM habits WHERE id = ?").run(habitId);
+  res.json({ deleted: true });
+});
+
 module.exports = router;

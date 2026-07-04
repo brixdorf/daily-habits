@@ -28,4 +28,13 @@ router.post("/", (req, res) => {
   res.status(201).json(note);
 });
 
+// DELETE /api/notes/:id
+router.delete("/:id", (req, res) => {
+  const noteId = parseInt(req.params.id, 10);
+  const note = db.prepare("SELECT id FROM notes WHERE id = ?").get(noteId);
+  if (!note) return res.status(404).json({ error: "note not found" });
+  db.prepare("DELETE FROM notes WHERE id = ?").run(noteId);
+  res.json({ deleted: true });
+});
+
 module.exports = router;

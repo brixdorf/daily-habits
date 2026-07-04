@@ -132,6 +132,7 @@ async function render() {
   }
   th(trLetters, "Goal", "col-goal");
   th(trLetters, "Achieved", "col-achieved");
+  th(trLetters, "", "col-delete");
 
   const trNumbers = thead.insertRow();
   th(trNumbers, "Habit", "col-name");
@@ -143,6 +144,7 @@ async function render() {
   }
   th(trNumbers, "", "col-goal");
   th(trNumbers, "", "col-achieved");
+  th(trNumbers, "", "col-delete");
 
   // Body rows
   const tbody = table.createTBody();
@@ -199,9 +201,48 @@ async function render() {
     const achievedTd = tr.insertCell();
     achievedTd.className = "col-achieved";
     updateAchievedCell(achievedTd, habit.achieved, habit.goal);
+
+    // Delete cell
+    const deleteTd = tr.insertCell();
+    deleteTd.className = "col-delete";
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn-delete";
+    deleteBtn.title = `Delete "${habit.name}"`;
+    deleteBtn.setAttribute("aria-label", `Delete habit ${habit.name}`);
+    deleteBtn.appendChild(makeTrashSvg());
+    deleteBtn.addEventListener("click", () => deleteHabit(habit, tr));
+    deleteTd.appendChild(deleteBtn);
   }
 
   container.appendChild(table);
+}
+
+function makeTrashSvg() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("width", "14");
+  svg.setAttribute("height", "14");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.75");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const lid = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  lid.setAttribute("x1", "2.5"); lid.setAttribute("y1", "4.5");
+  lid.setAttribute("x2", "13.5"); lid.setAttribute("y2", "4.5");
+  svg.appendChild(lid);
+
+  const handle = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  handle.setAttribute("d", "M6.5 4.5V3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1.5");
+  svg.appendChild(handle);
+
+  const body = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  body.setAttribute("d", "M4 4.5l.8 9a.5.5 0 0 0 .5.5h6.4a.5.5 0 0 0 .5-.5l.8-9");
+  svg.appendChild(body);
+
+  return svg;
 }
 
 function makeCheckSvg() {
@@ -290,6 +331,22 @@ function updateAchievedCell(td, achieved, goal) {
   }
 }
 
+async function deleteHabit(habit, tr) {
+  if (
+    !confirm(
+      `Delete "${habit.name}" and all its check history? This can't be undone.`,
+    )
+  )
+    return;
+  await apiFetch(`/api/habits/${habit.id}`, "DELETE");
+  tr.remove();
+  const tbody = document.querySelector(".habit-table tbody");
+  if (tbody && !tbody.rows.length) {
+    document.getElementById("habit-grid-container").innerHTML =
+      '<div class="empty-habits">No habits yet — add one below.</div>';
+  }
+}
+
 // =========================================================
 // New Habit modal
 // =========================================================
@@ -339,17 +396,40 @@ function buildNoteCard(note) {
   const card = document.createElement("div");
   card.className = "note-card";
 
+  const header = document.createElement("div");
+  header.className = "note-card-header";
+
   const ts = document.createElement("div");
   ts.className = "note-timestamp";
   ts.textContent = formatTimestamp(note.created_at);
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "btn-delete";
+  deleteBtn.title = "Delete note";
+  deleteBtn.setAttribute("aria-label", "Delete note");
+  deleteBtn.appendChild(makeTrashSvg());
+  deleteBtn.addEventListener("click", () => deleteNote(note.id, card));
+
+  header.appendChild(ts);
+  header.appendChild(deleteBtn);
 
   const content = document.createElement("div");
   content.className = "note-content";
   content.textContent = note.content;
 
-  card.appendChild(ts);
+  card.appendChild(header);
   card.appendChild(content);
   return card;
+}
+
+async function deleteNote(noteId, card) {
+  if (!confirm("Delete this note? This can't be undone.")) return;
+  await apiFetch(`/api/notes/${noteId}`, "DELETE");
+  card.remove();
+  const list = document.getElementById("notes-list");
+  if (!list.children.length) {
+    list.innerHTML = '<p class="notes-empty">No notes yet.</p>';
+  }
 }
 
 function formatTimestamp(sqliteStr) {
