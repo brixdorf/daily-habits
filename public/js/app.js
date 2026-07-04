@@ -22,6 +22,7 @@ const DAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
 
 // State
 let currentYear, currentMonth; // 0-indexed month
+let confirmCallback = null;
 
 function init() {
   const now = new Date();
@@ -58,12 +59,22 @@ function init() {
   document.getElementById("note-modal").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeNoteModal();
   });
+  document.getElementById("confirm-modal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeConfirmModal();
+  });
+  document.getElementById("confirm-cancel").addEventListener("click", closeConfirmModal);
+  document.getElementById("confirm-delete").addEventListener("click", () => {
+    const cb = confirmCallback;
+    closeConfirmModal();
+    if (cb) cb();
+  });
 
   // Close modals on Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeHabitModal();
       closeNoteModal();
+      closeConfirmModal();
     }
   });
 
@@ -132,7 +143,6 @@ async function render() {
   }
   th(trLetters, "Goal", "col-goal");
   th(trLetters, "Achieved", "col-achieved");
-  th(trLetters, "", "col-delete");
 
   const trNumbers = thead.insertRow();
   th(trNumbers, "Habit", "col-name");
@@ -144,7 +154,6 @@ async function render() {
   }
   th(trNumbers, "", "col-goal");
   th(trNumbers, "", "col-achieved");
-  th(trNumbers, "", "col-delete");
 
   // Body rows
   const tbody = table.createTBody();
@@ -153,10 +162,36 @@ async function render() {
     const checkedSet = new Set(habit.checkedDates);
     const tr = tbody.insertRow();
 
-    // Name cell
+    // Name cell — hover for 1.5s to reveal delete icon
     const nameTd = tr.insertCell();
     nameTd.className = "col-name";
-    nameTd.textContent = habit.name;
+
+    const nameWrapper = document.createElement("div");
+    nameWrapper.className = "habit-name-wrapper";
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "habit-name-text";
+    nameSpan.textContent = habit.name;
+
+    const habitDeleteBtn = document.createElement("button");
+    habitDeleteBtn.className = "btn-delete habit-delete-btn";
+    habitDeleteBtn.title = `Delete "${habit.name}"`;
+    habitDeleteBtn.setAttribute("aria-label", `Delete habit ${habit.name}`);
+    habitDeleteBtn.appendChild(makeTrashSvg());
+    habitDeleteBtn.addEventListener("click", () => deleteHabit(habit, tr));
+
+    nameWrapper.appendChild(nameSpan);
+    nameWrapper.appendChild(habitDeleteBtn);
+    nameTd.appendChild(nameWrapper);
+
+    let hoverTimer = null;
+    nameTd.addEventListener("mouseenter", () => {
+      hoverTimer = setTimeout(() => habitDeleteBtn.classList.add("visible"), 1500);
+    });
+    nameTd.addEventListener("mouseleave", () => {
+      clearTimeout(hoverTimer);
+      habitDeleteBtn.classList.remove("visible");
+    });
 
     // Day cells
     for (let d = 1; d <= daysInMonth; d++) {
@@ -201,17 +236,6 @@ async function render() {
     const achievedTd = tr.insertCell();
     achievedTd.className = "col-achieved";
     updateAchievedCell(achievedTd, habit.achieved, habit.goal);
-
-    // Delete cell
-    const deleteTd = tr.insertCell();
-    deleteTd.className = "col-delete";
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "btn-delete";
-    deleteBtn.title = `Delete "${habit.name}"`;
-    deleteBtn.setAttribute("aria-label", `Delete habit ${habit.name}`);
-    deleteBtn.appendChild(makeTrashSvg());
-    deleteBtn.addEventListener("click", () => deleteHabit(habit, tr));
-    deleteTd.appendChild(deleteBtn);
   }
 
   container.appendChild(table);
@@ -331,20 +355,31 @@ function updateAchievedCell(td, achieved, goal) {
   }
 }
 
+function confirmDelete(message, onConfirm) {
+  confirmCallback = onConfirm;
+  document.getElementById("confirm-modal-message").textContent = message;
+  document.getElementById("confirm-modal").hidden = false;
+  document.getElementById("confirm-delete").focus();
+}
+
+function closeConfirmModal() {
+  confirmCallback = null;
+  document.getElementById("confirm-modal").hidden = true;
+}
+
 async function deleteHabit(habit, tr) {
-  if (
-    !confirm(
-      `Delete "${habit.name}" and all its check history? This can't be undone.`,
-    )
-  )
-    return;
-  await apiFetch(`/api/habits/${habit.id}`, "DELETE");
-  tr.remove();
-  const tbody = document.querySelector(".habit-table tbody");
-  if (tbody && !tbody.rows.length) {
-    document.getElementById("habit-grid-container").innerHTML =
-      '<div class="empty-habits">No habits yet — add one below.</div>';
-  }
+  confirmDelete(
+    `Delete "${habit.name}" and all its check history? This can't be undone.`,
+    async () => {
+      await apiFetch(`/api/habits/${habit.id}`, "DELETE");
+      tr.remove();
+      const tbody = document.querySelector(".habit-table tbody");
+      if (tbody && !tbody.rows.length) {
+        document.getElementById("habit-grid-container").innerHTML =
+          '<div class="empty-habits">No habits yet — add one below.</div>';
+      }
+    },
+  );
 }
 
 // =========================================================
@@ -423,13 +458,14 @@ function buildNoteCard(note) {
 }
 
 async function deleteNote(noteId, card) {
-  if (!confirm("Delete this note? This can't be undone.")) return;
-  await apiFetch(`/api/notes/${noteId}`, "DELETE");
-  card.remove();
-  const list = document.getElementById("notes-list");
-  if (!list.children.length) {
-    list.innerHTML = '<p class="notes-empty">No notes yet.</p>';
-  }
+  confirmDelete("Delete this note? This can't be undone.", async () => {
+    await apiFetch(`/api/notes/${noteId}`, "DELETE");
+    card.remove();
+    const list = document.getElementById("notes-list");
+    if (!list.children.length) {
+      list.innerHTML = '<p class="notes-empty">No notes yet.</p>';
+    }
+  });
 }
 
 function formatTimestamp(sqliteStr) {

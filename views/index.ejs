@@ -125,6 +125,26 @@
       </div>
     </div>
 
+    <!-- Confirm Delete Modal -->
+    <div id="confirm-modal" class="modal-overlay" hidden>
+      <div
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-describedby="confirm-modal-message"
+      >
+        <p id="confirm-modal-message" class="confirm-message"></p>
+        <div class="modal-actions">
+          <button type="button" id="confirm-cancel" class="btn btn-ghost">
+            Cancel
+          </button>
+          <button type="button" id="confirm-delete" class="btn btn-danger">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="/js/app.js"></script>
   </body>
 </html>

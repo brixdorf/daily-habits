@@ -432,16 +432,20 @@ textarea {
   border-radius: 4px;
 }
 
-/* Delete column */
-.habit-table th.col-delete,
-.habit-table td.col-delete {
-  width: 2.25rem;
-  text-align: center;
-  padding: 0 0.25rem;
-  border-left: 1px solid var(--border);
+/* Habit name cell — wrapper for name text + hover-delay delete icon */
+.habit-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.habit-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
-/* Delete button — used in both the grid and note cards */
+/* Delete button — used in note cards (always visible) */
 .btn-delete {
   display: inline-flex;
   align-items: center;
@@ -454,10 +458,38 @@ textarea {
   cursor: pointer;
   transition: color 0.15s, background 0.15s;
   line-height: 0;
+  flex-shrink: 0;
 }
 .btn-delete:hover {
   color: #ef4444;
   background: color-mix(in srgb, #ef4444 12%, transparent);
+}
+
+/* Habit-row delete icon — hidden until 1.5s hover via JS */
+.habit-delete-btn {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms;
+}
+.habit-delete-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Destructive action button */
+.btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+.btn-danger:hover {
+  filter: brightness(1.08);
+}
+
+/* Confirm modal message text */
+.confirm-message {
+  font-size: 0.9375rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
 }
 
 /* Row separators */
